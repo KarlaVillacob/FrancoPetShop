@@ -1,0 +1,349 @@
+body {
+  font-family: 'Quicksand', sans-serif;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: 'Londrina Shadow', cursive;
+  font-size: 80px;
+}
+
+.title-logo {
+  background-color: #0058a4;
+  height: 130px;
+}
+
+.logo {
+  height: 100%;
+}
+
+.logo img {
+  height: 100%;
+}
+
+.navbar {
+  height: 45px;
+}
+
+.navbar-collapse {
+  justify-content: center;
+}
+
+.nav-link {
+  color: white !important;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0px 20px
+}
+
+.nav-link:hover {
+  color: #0058a4 !important;
+}
+
+.nav-item .active {
+  color: #0058a4 !important;
+  text-transform: uppercase;
+}
+
+.carousel-item{
+  height: 226px !important;
+}
+
+.carousel-item img{
+  height: 100%;
+}
+
+.welcome {
+  height: calc(100vh - 401px);
+}
+
+.welcome-img {
+  width: 30%;
+}
+
+.welcome-text {
+  width: 60%;
+}
+
+.location {
+  height: calc(100vh - 320px);
+  background-color: #0058a4;
+  padding: 20px;
+}
+
+.location p{
+  font-size: 20px;
+}
+
+iframe {
+  border-radius: 20px;
+}
+
+.filter {
+  width: 40%;
+  padding: 5px;
+  margin-left: 144px;
+  padding-top: 20px;
+}
+
+.products {
+  width: 30%;
+  padding-top: 15px;
+  border-radius: 18px;
+  min-height: 425px;
+  box-shadow: 5px 5px #424141
+}
+
+.card-title {
+  color: #0058a4;
+  font-weight: bold;
+}
+
+.title-card{
+  height: 48px !important;
+}
+
+.card-text {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.last-units {
+  background-color: #CB1A26;
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+  border-radius: 16px;
+  margin-bottom: 0px;
+}
+
+.card-img-top{
+  width: 50%;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-card {
+  margin: 0px 5px
+}
+
+.wrapper, .contact-container {
+  background-color: #0058a4;
+}
+
+.container-products {
+  height: 250px;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+footer {
+  background-color: #F8CF52;
+  color: #0058a4;
+  padding: 3px 50px;
+  font-size: 20px;
+}
+
+.img-footer {
+  width: 60px;
+}
+
+.img-footer img{
+  width: 100%;
+}
+
+section {
+  min-height: calc(100vh - 258px);
+}
+
+.wrapper {
+  padding-bottom: 10px;
+  min-height: 249px;
+}
+
+#navCart {
+  margin-left: 5px;
+}
+
+h2, h4 {
+  color: #0058a4;
+  font-weight: bold;
+}
+
+h4 {
+  margin-top: 20px;
+}
+
+.h4-noModal {
+  margin-top: 0px;
+}
+
+.h4-noMargin {
+  margin: 0px
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.modal-header, .modal-body {
+  padding: 1rem 2rem
+}
+
+#inputQuantity{
+  margin-left: 5px;
+}
+
+label {
+  color: white;
+  font-size: 20px;
+}
+
+.contact-container {
+  padding: 30px;
+}
+
+.toast-container {
+  width: 550px !important;
+}
+
+.toast {
+  width: 100%;
+  border-radius: 16px;
+}
+
+.modal-content {
+  border-radius: 16px;
+}
+
+.toast-body div{
+  width: 200px;
+  margin-right: 20px;
+}
+
+.toast-body img{
+  width: 100%;
+}
+
+h3 {
+  text-align: right;
+}
+
+.container-cart {
+  min-height: 250px!important;
+}
+
+#cart {
+  padding: 0px 0px 20px 0px ;
+}
+
+.products-cart{
+  width: 100%;
+}
+
+.img-cart {
+  height: 170px;
+}
+
+.img-cart img{
+  height: 90%;
+}
+
+.text-cart {
+  margin: 10px 20px 10px 0px
+}
+
+.products-cart {
+  border: 1px solid #0058a4
+}
+
+.payments-methods {
+  padding: 20px 30px 10px 30px
+}
+
+.payments {
+  padding-top: 20px;
+  justify-content: space-around;
+}
+
+.payment {
+  width: 30%;
+}
+
+.payment-img {
+  width: 100px;
+  min-height: 100px;
+}
+
+.payment-img img{
+  width: 100%;
+}
+
+.coupon{
+  background-color:  #F8CF52;
+  height: 60px;
+}
+
+.bg-blue {
+  background-color: #0058a4;
+}
+
+.blue {
+  color: #0058a4
+}
+
+.bg-yellow {
+  background-color: #F8CF52;
+}
+
+.container-input-cart {
+  margin-right: 20px;
+  width: 145px;
+}
+
+.container-input-cart input{
+  width: 45px;
+  margin-left: 10px;
+}
+
+.center {
+  text-align: center;
+}
+
+.h5-coupon {
+  margin-top: 20px;
+}
+
+.modal-body-coupon{
+  padding-top: 0px;
+}
+
+.modal-header-coupon {
+  padding-bottom: 0px;
+}
+
+.form-check{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input {
+  margin-right: 5px;
+}
+
+.button-coupon{
+  border-radius: 50%;
+  padding: 0px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -30px;
+  right: -100px;
+}
