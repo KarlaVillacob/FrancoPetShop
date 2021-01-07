@@ -351,3 +351,17 @@ h3 {
   width: 20%;
   margin-left: 10px;
 }
+
+.button-check {
+  border: none;
+  background-color: white;
+}
+
+.button-check:focus {
+  outline: none;
+}
+
+
+.response-coupon {
+  display: none;
+}

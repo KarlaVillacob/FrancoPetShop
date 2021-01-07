@@ -7,7 +7,8 @@ const getCartNumber = () => {
 class User {
   constructor (email, code) {
     this.email = email,
-    this.code = code
+    this.code = code, 
+    this.used = false
   }
 }
 
@@ -164,6 +165,7 @@ function containerProductCart(card, product) {
 
 function constructorCart() {
   getCartNumber()
+  var select_coupon = false
   var sumTotal = 0
   var products = JSON.parse(localStorage.getItem("array"))
   const container = document.getElementById('container')
@@ -234,6 +236,32 @@ function constructorCart() {
     localStorage.setItem("cart", JSON.stringify(number))
     constructorCart()
   }
+
+  const button_check_coupon = document.getElementById('check-coupon')
+  button_check_coupon.addEventListener('click', (e) => {
+    const input_coupon = document.getElementById('coupon-cart')
+    var users = JSON.parse(localStorage.getItem("users"))
+    var user = users.filter(item => item.code === input_coupon.value)
+    const response = document.getElementById('response-coupon')
+    console.log(user)
+    if (user.length > 0) {
+      if (!user.used) {
+        console.log('puede usar el codigo')
+        console.log(button_check_coupon.children[0])
+        button_check_coupon.children[0].classList = ''
+        button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-success'
+        response.innerText = 'Cupón valido para su uso'
+        response.classList.add('text-success')
+      } else {
+        console.log('no puede usar el codigo')
+        button_check_coupon.children[0].classList = ''
+        button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-danger'
+      }
+    } else {
+      response.innerText = 'Cupón no disponible'
+      response.classList.add('text-danger')
+    }
+  })
 }
 
 function sendFormContact() {
