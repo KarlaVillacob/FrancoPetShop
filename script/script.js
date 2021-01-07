@@ -7,7 +7,7 @@ const getCartNumber = () => {
 const home = () => {
   getCartNumber()
   const formCoupon = document.getElementById('form-coupon')
-
+  
 }
 
 const getApi = (page) => {
@@ -118,6 +118,29 @@ const constructorCard = (product) => {
   })
 }
 
+function containerProductCart(card, product) {
+  card.innerHTML = 
+    `<div class="row no-gutters">
+      <div class="col-md-4 img-cart d-flex justify-content-center align-items-center"><img src=${product.imagen} alt="..."></div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">${product.nombre}</h5>
+            <div class="d-flex">
+              <p class="card-text text-cart">PRECIO: $${product.precio}</p>
+              <div class='d-flex align-items-center container-input-cart'>
+                <p class="card-text h4-noMargin">CANTIDAD:</p>
+                <input class="form-control" type="number" min='1' value=${product.quantity} max='${product.stock}' id=${product._id}-input>
+              </div>
+              <p class="card-text text-cart" id=${product._id}-total>TOTAL: $${product.quantity * product.precio}</p>
+            </div>
+            <div class='d-flex justify-content-end'>
+              <button id=${product._id}-delete type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailProduct">Borrar</button>
+            </div>
+        </div>
+      </div>
+    </div>`
+}
+
 function constructorCart() {
   getCartNumber()
   var sumTotal = 0
@@ -128,19 +151,6 @@ function constructorCart() {
   row.innerHTML = `<div class="row d-flex justify-content-center" id='row'></div>`
   container.appendChild(row)
 
-  const changeQuantity = (e) => {
-    const id = e.target.id.split('-')[0]
-    var productsQuantity = JSON.parse(localStorage.getItem("array"))
-    var position = productsQuantity.findIndex(item => item._id === id)
-    if (position >=0) {
-      productsQuantity[position].quantity = parseInt(e.target.value)
-      var cart_number = productsQuantity.reduce( (a, b) => a + parseInt(b.quantity), 0)
-      localStorage.setItem("array", JSON.stringify(productsQuantity))
-      localStorage.setItem("cart", JSON.stringify(cart_number))
-      constructorCart()
-    }
-  }
-
   if (!products || products.length < 1) {
   const text = document.createElement('div')
   text.innerHTML = '<h4>No hay productos...</h4>'
@@ -149,31 +159,29 @@ function constructorCart() {
     products.map(product => {
       sumTotal = sumTotal + (product.quantity * product.precio)
       const card = document.createElement('div')
-      card.innerHTML = 
-        `<div class="row no-gutters">
-          <div class="col-md-4 img-cart d-flex justify-content-center align-items-center"><img src=${product.imagen} alt="..."></div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">${product.nombre}</h5>
-              <div class="d-flex">
-                <p class="card-text text-cart">PRECIO: $${product.precio}</p>
-                <div class='d-flex align-items-center container-input-cart'>
-                  <p class="card-text h4-noMargin">CANTIDAD:</p>
-                  <input type="number" min='1' value=${product.quantity} max='${product.stock}' id=${product._id}-input>
-                </div>
-                <p class="card-text text-cart">TOTAL: $${product.quantity * product.precio}</p>
-              </div>
-              <div class='d-flex justify-content-end'>
-                <button id=${product._id}-delete type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailProduct">Borrar</button>
-              </div>
-            </div>
-          </div>
-        </div>`
+      containerProductCart(card, product)
       card.className = 'card products-cart col-12 m-3'
       row.appendChild(card)
 
       const inputCart = document.getElementById(`${product._id}-input`)
-      inputCart.addEventListener('change', changeQuantity)
+      inputCart.addEventListener('change', (e) => {
+        const id = e.target.id.split('-')[0]
+        var productsQuantity = JSON.parse(localStorage.getItem("array"))
+        var position = productsQuantity.findIndex(item => item._id === id)
+        if (position >=0) {
+          productsQuantity[position].quantity = parseInt(e.target.value)
+          var cart_number = productsQuantity.reduce( (a, b) => a + parseInt(b.quantity), 0)
+          var total_number = productsQuantity.reduce( (a, b) => a + (parseInt(b.quantity) * parseInt(b.precio)), 0)
+          localStorage.setItem("array", JSON.stringify(productsQuantity))
+          localStorage.setItem("cart", JSON.stringify(cart_number))
+          
+          pTotal = document.getElementById(`${product._id}-total`)
+          totalCart = document.getElementById('total-cart')
+          pTotal.innerText = `TOTAL: $${e.target.value * product.precio}`
+          totalCart.innerText = `TOTAL A PAGAR: $${(total_number).toFixed(2)}`
+          getCartNumber()
+        }
+      })
 
       const buttonDelete = document.getElementById(`${product._id}-delete`)
       buttonDelete.addEventListener('click', () => {
@@ -187,12 +195,9 @@ function constructorCart() {
      })
     }
   )}
-  const subtotal = document.getElementById('subtotal')
-  const iva = document.getElementById('iva')
+
   const total = document.getElementById('total')
-  subtotal.innerHTML = `<span class="bold">Subtotal:</span> $${(sumTotal).toFixed(2)}`
-  iva.innerHTML = `<span class="bold">IVA:</span> $${(sumTotal * 0.21).toFixed(2)}`
-  total.innerHTML = `<span class="bold">TOTAL A PAGAR:</span> $${(sumTotal + (sumTotal * 0.21)).toFixed(2)}`
+  total.innerHTML = `<span class="bold" id='total-cart'>TOTAL A PAGAR: $${(sumTotal).toFixed(2)}</span>`
   const cartBuy = document.getElementById('cart-buy')
   cartBuy.onclick = () => {
     var toast = document.getElementById('toast-buy-cart')
