@@ -4,10 +4,31 @@ const getCartNumber = () => {
   navCart.innerHTML = `(${number || 0})`
 }
 
+class User {
+  constructor (email, code) {
+    this.email = email,
+    this.code = code
+  }
+}
+
 const home = () => {
   getCartNumber()
   const formCoupon = document.getElementById('form-coupon')
-  
+  var modalCoupon = new bootstrap.Modal(document.getElementById('home-coupon'))
+  var modalNumberCoupon = new bootstrap.Modal(document.getElementById('coupon'))
+  console.log(modalNumberCoupon)
+  formCoupon.onsubmit = function(e) {
+    e.preventDefault()
+    email = e.target.elements.email.value
+    code = Math.floor(Math.random()*16777215).toString(16)
+    const user = new User(email, code)
+    var users = JSON.parse(localStorage.getItem("users")) || []
+    localStorage.setItem("users", JSON.stringify([...users, user]))
+    modalCoupon.hide()
+    const title = document.getElementById('number-coupon')
+    title.innerHTML = `CUPON: ${code}`
+    modalNumberCoupon.show()
+  }
 }
 
 const getApi = (page) => {

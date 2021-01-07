@@ -154,11 +154,11 @@
               <h5 class="h5-coupon blue bold">VOS</h5>
               <div class="form-group">
                 <label for="coupon-name" class="blue">Tu nombre</label>
-                <input required type="text" class="form-control" id="coupon-name" placeholder="Nombre">
+                <input name='name' required type="text" class="form-control" id="coupon-name" placeholder="Nombre">
               </div>
               <div class="form-group">
                 <label for="coupon-email" class="blue">Tu Correo Electrónico</label>
-                <input required type="email" class="form-control" id="coupon-email" aria-describedby="emailHelp" placeholder="correo@ejemplo.com">
+                <input name='email' required type="email" class="form-control" id="coupon-email" aria-describedby="emailHelp" placeholder="correo@ejemplo.com">
               </div>
               <h5 class="h5-coupon blue bold">TU MASCOTA</h5>
               <label for="inputPet" class="blue">Cuál es tu mascota?</label>
@@ -179,6 +179,18 @@
                 <button type="submit" class="btn btn-primary bg-blue">QUIERO MI CUPÓN</button>
               </div>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade " id="coupon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-blue">
+          <div class="modal-header d-flex justify-content-center">
+            <h2 class="modal-title text-white fw-bold" id="number-coupon"></h2>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary bg-success fw-bold" data-bs-dismiss="modal">OK</button>
           </div>
         </div>
       </div>
