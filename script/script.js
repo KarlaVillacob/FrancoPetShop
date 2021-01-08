@@ -5,8 +5,8 @@ const getCartNumber = () => {
 }
 
 class User {
-  constructor (email, code) {
-    this.email = email,
+  constructor (dni, code) {
+    this.dni = dni,
     this.code = code, 
     this.used = false
   }
@@ -17,18 +17,30 @@ const home = () => {
   const formCoupon = document.getElementById('form-coupon')
   var modalCoupon = new bootstrap.Modal(document.getElementById('home-coupon'))
   var modalNumberCoupon = new bootstrap.Modal(document.getElementById('coupon'))
-  console.log(modalNumberCoupon)
+
   formCoupon.onsubmit = function(e) {
     e.preventDefault()
-    email = e.target.elements.email.value
-    code = Math.floor(Math.random()*16777215).toString(16)
-    const user = new User(email, code)
-    var users = JSON.parse(localStorage.getItem("users")) || []
-    localStorage.setItem("users", JSON.stringify([...users, user]))
+    const users = JSON.parse(localStorage.getItem("users")) || []
+    dni = e.target.elements.dni.value
+    const userFiltered = users.filter(user => user.dni === dni)
+    console.log(userFiltered)
+    if (userFiltered.length > 0 ) {
+      const title = document.getElementById('number-coupon')
+      if (userFiltered[0].used) {
+        title.innerHTML = `Tu Cupón ya fue usado`
+      } else {
+        title.innerHTML = `CUPON: ${userFiltered[0].code}`
+      }
+    } else {
+      code = Math.floor(Math.random()*16777215).toString(16)
+      const user = new User(dni, code)
+      localStorage.setItem("users", JSON.stringify([...users, user]))
+      const title = document.getElementById('number-coupon')
+      title.innerHTML = `CUPON: ${code}`
+    }
     modalCoupon.hide()
-    const title = document.getElementById('number-coupon')
-    title.innerHTML = `CUPON: ${code}`
     modalNumberCoupon.show()
+    formCoupon.reset()
   }
 }
 
@@ -165,7 +177,6 @@ function containerProductCart(card, product) {
 
 function constructorCart() {
   getCartNumber()
-  var select_coupon = false
   var sumTotal = 0
   var products = JSON.parse(localStorage.getItem("array"))
   const container = document.getElementById('container')
@@ -200,8 +211,15 @@ function constructorCart() {
           
           pTotal = document.getElementById(`${product._id}-total`)
           totalCart = document.getElementById('total-cart')
+          before_total = document.getElementById('before-total')
           pTotal.innerText = `TOTAL: $${e.target.value * product.precio}`
-          totalCart.innerText = `TOTAL A PAGAR: $${(total_number).toFixed(2)}`
+
+          if (before_total) {
+            before_total.innerHTML = `<span class="bold" id='before-total'>TOTAL: <span class='text-decoration-line-through'>$${(total_number).toFixed(2)}</span></span>`
+            totalCart.innerText = `TOTAL A PAGAR: $${(total_number - (total_number * 0.15)).toFixed(2)}`
+          } else {
+            totalCart.innerText = `TOTAL A PAGAR: $${(total_number).toFixed(2)}`
+          }
           getCartNumber()
         }
       })
@@ -214,7 +232,28 @@ function constructorCart() {
         var number = JSON.parse(localStorage.getItem("cart"))
         number = number - productDelete.quantity
         localStorage.setItem("cart", JSON.stringify(number))
+        const input_coupon = document.getElementById('coupon-cart')
+        
         constructorCart()
+        if (input_coupon.value) {
+          const total = document.getElementById('total')
+          if (products.length > 1) {
+            var productsQuantity = JSON.parse(localStorage.getItem("array"))
+            var total_number = productsQuantity.reduce( (a, b) => a + (parseInt(b.quantity) * parseInt(b.precio)), 0)
+            total.innerHTML = `
+              <div class='d-flex flex-column' id='container-total'>
+                <span class="bold" id='before-total'>TOTAL: <span class='text-decoration-line-through'>$${(total_number).toFixed(2)}</span></span>
+                <span class="bold text-success" id='total-cart'>TOTAL A PAGAR: $${(total_number - (total_number * 0.15)).toFixed(2)}</span>
+              </div>`
+          } else {
+            const button_check_coupon = document.getElementById('check-coupon')
+            button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-dark'
+            const response = document.getElementById('response-coupon')
+            input_coupon.value = ''
+            response.innerHTML = ''
+            total.innerHTML = `<span class="bold" id='total-cart'>TOTAL A PAGAR: $${(total_number).toFixed(2)}</span>`
+          }
+        }
      })
     }
   )}
@@ -234,6 +273,21 @@ function constructorCart() {
     number = 0
     navCart.innerHTML = `(${number})`
     localStorage.setItem("cart", JSON.stringify(number))
+
+    const input_coupon = document.getElementById('coupon-cart')
+    var users = JSON.parse(localStorage.getItem("users")) || []
+    const position = users.findIndex(item => item.code === input_coupon.value)
+    console.log(users.length)
+    if (users.length > 0) {
+      users[position].used = true
+    }
+    localStorage.setItem("users", JSON.stringify(users))
+    input_coupon.value = ''
+
+    const response = document.getElementById('response-coupon')
+    response.innerHTML = ''
+    const button_check_coupon = document.getElementById('check-coupon')
+    button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-dark'
     constructorCart()
   }
 
@@ -242,24 +296,49 @@ function constructorCart() {
     const input_coupon = document.getElementById('coupon-cart')
     var users = JSON.parse(localStorage.getItem("users"))
     var user = users.filter(item => item.code === input_coupon.value)
-    const response = document.getElementById('response-coupon')
-    console.log(user)
     if (user.length > 0) {
-      if (!user.used) {
-        console.log('puede usar el codigo')
-        console.log(button_check_coupon.children[0])
+      const response = document.getElementById('response-coupon')
+      if (!user[0].used) {
         button_check_coupon.children[0].classList = ''
         button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-success'
         response.innerText = 'Cupón valido para su uso'
-        response.classList.add('text-success')
+        response.classList = ''
+        response.classList = 'text-end text-success'
+        total.innerHTML = `
+        <div class='d-flex flex-column' id='container-total'>
+          <span class="bold" id='before-total'>TOTAL: <span class='text-decoration-line-through'>$${(sumTotal).toFixed(2)}</span></span>
+          <span class="bold text-success" id='total-cart'>TOTAL A PAGAR: $${(sumTotal - (sumTotal * 0.15)).toFixed(2)}</span>
+        </div>`
       } else {
-        console.log('no puede usar el codigo')
         button_check_coupon.children[0].classList = ''
         button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-danger'
+        response.innerText = 'Cupón ya fué usado'
+        response.classList = ''
+        response.classList = 'text-end text-danger'
       }
     } else {
+      const button_check_coupon = document.getElementById('check-coupon')
+      button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-danger'
+      const response = document.getElementById('response-coupon')
       response.innerText = 'Cupón no disponible'
       response.classList.add('text-danger')
+    }
+  })
+  const button_x_coupon = document.getElementById('x-coupon')
+  button_x_coupon.addEventListener('click', () => {
+    const input_coupon = document.getElementById('coupon-cart')
+    const container_total = document.getElementById('container-total')
+    input_coupon.value = ''
+    const response = document.getElementById('response-coupon')
+    if (container_total) {
+      total.innerHTML = `<span class="bold" id='total-cart'>TOTAL A PAGAR: $${(sumTotal).toFixed(2)}</span>`
+      response.innerHTML = ''
+      const button_check_coupon = document.getElementById('check-coupon')
+      button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-dark'
+    } else {
+      response.innerHTML = ''
+      const button_check_coupon = document.getElementById('check-coupon')
+      button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-dark'
     }
   })
 }
