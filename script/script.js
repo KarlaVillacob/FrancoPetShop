@@ -277,8 +277,8 @@ function constructorCart() {
     const input_coupon = document.getElementById('coupon-cart')
     var users = JSON.parse(localStorage.getItem("users")) || []
     const position = users.findIndex(item => item.code === input_coupon.value)
-    console.log(users.length)
-    if (users.length > 0) {
+
+    if (users.length > 0 && (users[position])) {
       users[position].used = true
     }
     localStorage.setItem("users", JSON.stringify(users))
@@ -288,6 +288,7 @@ function constructorCart() {
     response.innerHTML = ''
     const button_check_coupon = document.getElementById('check-coupon')
     button_check_coupon.children[0].classList = 'bi bi-check-circle-fill text-dark'
+
     constructorCart()
   }
 
